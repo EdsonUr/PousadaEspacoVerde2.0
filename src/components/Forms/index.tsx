@@ -3,6 +3,7 @@ import React from 'react';
 import { Container, Title, Separator } from './styles';
 import { Input } from '../Input';
 import emailjs from 'emailjs-com';
+import { toast } from 'react-toastify';
 
 // Assets
 import { ReactComponent as Person } from '../../assets/person.svg';
@@ -32,7 +33,9 @@ export function Forms(){
         // event.preventDefault();
         setIsSending(true);
         if(name === '' || email === '' || whatsapp === '' || message === '') {
-            alert('Preencha todos os campos!');
+            toast.error('Preencha todos os campos para enviar a mensagem.', {
+                closeOnClick: true
+            });
             setIsSending(false);
             return;
         }
@@ -46,9 +49,17 @@ export function Forms(){
     
         emailjs.send(serviceId, templateId, templateParams, userId)
         .then((response) => {
-            alert('Mensagem enviada com sucesso!');
+            toast.success('Mensagem enviada com sucesso!', {
+                closeOnClick: true
+            });
+            setName('');
+            setEmail('');
+            setWhatsapp('');
+            setMessage('');
         }, (error) => {
-            alert('Ocorreu um erro ao enviar a mensagem, tente novamente mais tarde.');
+            toast.error('Ocorreu um erro ao enviar a mensagem, tente novamente mais tarde.', {
+                closeOnClick: true
+            });
         });
         setTimeout(() => {
             setIsSending(false);
